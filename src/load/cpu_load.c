@@ -17,7 +17,10 @@ int is_prime(uint64_t a){
     return 1;
 }
 
-// This function return how many prime numbers are inferiors to n
+/* 
+This function return how many prime numbers are inferiors to n.
+For n > 10^9 it starts to be a bit long
+*/ 
 uint64_t prime_counting(uint64_t n){
     uint64_t count = 0;
 
