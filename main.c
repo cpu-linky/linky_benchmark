@@ -5,11 +5,9 @@
 int main(int, char**){
     printf("Hello, from cstate_monitor!\n");
 
-    uint64_t a = 4307736511339693217;
-    if (is_prime(a) == 1){
-        printf("%li is prime \n", a);
-    } 
-    else {
-        printf("%li is not prime \n", a);
-    }
+    uint64_t a = 10000000;
+    uint64_t count = prime_counting(a);
+    
+    printf("There are %li prime numbers below %li\n", count, a);
 }
+
