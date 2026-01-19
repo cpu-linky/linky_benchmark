@@ -5,9 +5,5 @@
 int main(int, char**){
     printf("Hello, from cstate_monitor!\n");
 
-    uint64_t a = 10000000;
-    uint64_t count = prime_counting(a);
-    
-    printf("There are %li prime numbers below %li\n", count, a);
+    dump_io();
 }
-
