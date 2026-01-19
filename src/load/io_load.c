@@ -1,31 +1,34 @@
 #include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 // dump a 1Mo buffer of random data (/dev/urandom) into a dump file
 int dump_io(){
-    FILE *fp;
-    FILE *fp2;
+    int fd_in, fd_out;
     char buffer[1024*1024];
 
-    fp = fopen("/dev/urandom", "rb");
-    if(fp == NULL){
+    fd_in = open("/dev/urandom", O_RDONLY);
+    if(fd_in < 0){
         perror("Error opening /dev/urandom");
         return -1;
     }
 
-    size_t result = fread(buffer, 1, sizeof(buffer), fp);
+    ssize_t result = read(fd_in, buffer, sizeof(buffer));
     if (result != sizeof(buffer)) {
-        perror("Reading error"); 
+        perror("Reading error");
     }
-    fclose(fp);
+    close(fd_in);
 
-    fp2 = fopen("dump.bin", "wb");
-    if(fp2 == NULL){
+    fd_out = open("dump.bin", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+    if(fd_out < 0){
         perror("Error opening dump.bin");
-        fclose(fp);
         return -1;
     }
-        
-    fwrite(buffer, 1, sizeof(buffer), fp2);
-    fclose(fp2);
+
+    ssize_t written = write(fd_out, buffer, sizeof(buffer));
+    if (written != sizeof(buffer)) {
+        perror("Writing error");
+    }
+    close(fd_out);
     return 0;
 }
