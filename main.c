@@ -3,7 +3,10 @@
 #include "src/load/load.h"
 
 int main(int, char**){
-    printf("Hello, from cstate_monitor!\n");
+    printf("Hello from cstate monitor\n");
 
-    dump_io();
+    int jumps = 1000000;
+    printf("Performing a pointer chase with %d jumps\n", jumps);
+
+    pointer_chase(jumps);
 }
