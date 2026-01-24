@@ -3,10 +3,7 @@
 #include "src/load/load.h"
 
 int main(int, char**){
-    printf("Hello from cstate monitor\n");
-
-    int jumps = 1000000;
-    printf("Performing a pointer chase with %d jumps\n", jumps);
-
-    pointer_chase(jumps);
+    int n = 100000000;
+    printf("Counting how many prime below %d\n", n);
+    prime_counting(n);
 }
