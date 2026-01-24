@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Run the given function in the given cpu
 int run_with_affinity(int cpu, void (*func)(void*), void* args) {
 
     cpu_set_t cpuset;
