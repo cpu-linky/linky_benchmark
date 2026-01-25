@@ -56,7 +56,8 @@ check_requirements() {
 }
 
 run_with_stats() {
-    turbostat --interval 1 ../out/bin/state_monitor
+    turbostat --interval 1 --quiet \
+    ../out/bin/cstate_monitor
 }
 
 
