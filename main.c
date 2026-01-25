@@ -13,59 +13,74 @@ int main() {
     char *command_io[] = {"turbostat", "--quiet", "--interval", "1", "bin/io_load", "300", NULL};
 
     char *cpu_n_pi = getenv("CPU_N_PI");
-    char *n_cpu = getenv("N_CPU");
+    int n_cpu = atoi(getenv("N_CPU"));
 
     char *mem_n_jumps = getenv("MEMORY_N_JUMPS");
-    char *n_memory = getenv("N_MEMORY");
+    int n_memory = atoi(getenv("N_MEMORY"));
 
     char *io_n_dumps = getenv("IO_N_DUMPS");
-    char *n_io = getenv("N_IO");
+    int n_io = atoi(getenv("N_IO"));
+
 
     command_cpu[5] = cpu_n_pi;
     command_mem[5] = mem_n_jumps;
     command_io[5] = io_n_dumps;
 
+    pid_t pid;
+
     // Fork 1 : CPU Load
-    pid_t pid = fork();
-    if (pid == 0) {
-        execvp(command_cpu[0], command_cpu);
-        perror("[ERROR] execvp failed for CPU load");
-        return 1;
-    } else if (pid > 0) {
-        int status;
-        waitpid(pid, &status, 0);
-        printf("[SUCCESS] CPU load test done! (Exit code : %d)\n", WEXITSTATUS(status));
-    } else {
-        perror("[ERROR] Fail to fork CPU load");
+    printf("[INFO] CPU test begins : %d cycles\n", n_cpu);
+    for (int i = 0; i < n_cpu; i++) {
+        pid = fork();
+        if (pid == 0) {
+            execvp(command_cpu[0], command_cpu);
+            perror("[ERROR] execvp failed for CPU load");
+            return 1;
+        } else if (pid > 0) {
+            int status;
+            waitpid(pid, &status, 0);
+            printf("[INFO] CPU load cycle no %d done! (Exit code : %d)\n", i, WEXITSTATUS(status));
+        } else {
+            perror("[ERROR] Fail to fork CPU load");
+        }
     }
+    printf("[SUCCESS] CPU : all %d cycles are done\n", n_cpu);
 
     // Fork 2 : memory load
-    pid = fork();
-    if (pid == 0) {
-        execvp(command_mem[0], command_mem);
-        perror("[ERROR] execvp failed for memory load");
-        return 1;
-    } else if (pid > 0) {
-        int status;
-        waitpid(pid, &status, 0);
-        printf("[SUCCESS] Memory load test done! (Exit code : %d)\n", WEXITSTATUS(status));
-    } else {
-        perror("[ERROR] Fail to fork Memory load");
+    printf("[INFO] Memory test begins : %d cycles\n", n_memory);   
+    for (int i = 0; i < n_memory; i ++){
+        pid = fork();
+        if (pid == 0) {
+            execvp(command_mem[0], command_mem);
+            perror("[ERROR] execvp failed for memory load");
+            return 1;
+        } else if (pid > 0) {
+            int status;
+            waitpid(pid, &status, 0);
+            printf("[INFO] Memory load cycle no %d done! (Exit code : %d)\n", i, WEXITSTATUS(status));
+        } else {
+            perror("[ERROR] Fail to fork Memory load");
+        }
     }
+    printf("[SUCCESS] Memory : all %d cycles are done\n", n_memory);
 
     // Fork 3 : io load
-    pid = fork();
-    if (pid == 0) {
-        execvp(command_io[0], command_io);
-        perror("[ERROR] execvp failed for io load");
-        return 1;
-    } else if (pid > 0) {
-        int status;
-        waitpid(pid, &status, 0);
-        printf("[SUCCESS] IO load test done! (Exit code : %d)\n", status);
-    } else {
-        perror("[ERROR] Fail to fork io load");
+    printf("[INFO] I/O test begins : %d cycles\n", n_io);  
+    for (int i = 0; i < n_io; i++) {
+        pid = fork();
+        if (pid == 0) {
+            execvp(command_io[0], command_io);
+            perror("[ERROR] execvp failed for io load");
+            return 1;
+        } else if (pid > 0) {
+            int status;
+            waitpid(pid, &status, 0);
+            printf("[INFO] IO load cycle no %d done! (Exit code : %d)\n", i, status);
+        } else {
+            perror("[ERROR] Fail to fork io load");
+        }
     }
+    printf("[SUCCESS] I/O : all %d cycles are done\n", n_io);
 
     return 0;
 }
