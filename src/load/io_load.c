@@ -31,6 +31,13 @@ int dump_io(){
         perror("Writing error");
     }
     close(fd_out);
+
+    // delete file
+    if(unlink("dump") < 0){
+        perror("Error deleting dump");
+        return -1;
+    }
+
     return 0;
 }
 
