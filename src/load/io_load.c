@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 // dump a 1Mo buffer of random data (/dev/urandom) into a dump file
 int dump_io(){
@@ -30,5 +31,22 @@ int dump_io(){
         perror("Writing error");
     }
     close(fd_out);
+    return 0;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage : %s <loop>\n", argv[0]);
+        return 1;
+    }
+
+    int loop = atoi(argv[1]);
+    for (int i = 0; i < loop; i++) {
+        if (dump_io() != 0) {
+            return 1;
+        }
+    }
+
+    printf("Dumped %d * 1MB of random data to dump.bin\n", loop);
     return 0;
 }

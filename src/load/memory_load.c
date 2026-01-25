@@ -63,3 +63,18 @@ int pointer_chase(int jumps) {
     free(memory_array);
     return 0;
 }
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <jumps>\n", argv[0]);
+        return 1;
+    }
+
+    int jumps = atoi(argv[1]);
+    if (pointer_chase(jumps) != 0) {
+        return 1;
+    }
+
+    printf("Completed %d pointer jumps in memory.\n", jumps);
+    return 0;
+}

@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 
 // easy and trivial primality test
@@ -31,4 +32,17 @@ uint64_t prime_counting(uint64_t n){
     }
 
     return count;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Usage: %s <number>\n", argv[0]);
+        return 1;
+    }
+
+    uint64_t n = strtoull(argv[1], NULL, 10);
+    uint64_t count = prime_counting(n);
+    printf("Number of primes less than or equal to %lu: %lu\n", n, count);
+
+    return 0;
 }
