@@ -1,11 +1,29 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "src/env/env.h"
 
 int main() {
+    // Load env and build commands
+    load_env_file("config.env");
+    
     char *command_cpu[] = {"turbostat", "--quiet", "--interval", "1", "bin/cpu_load", "10000000", NULL};
     char *command_mem[] = {"turbostat", "--quiet", "--interval", "1", "bin/memory_load", "10000000", NULL};
     char *command_io[] = {"turbostat", "--quiet", "--interval", "1", "bin/io_load", "300", NULL};
+
+    char *cpu_n_pi = getenv("CPU_N_PI");
+    char *n_cpu = getenv("N_CPU");
+
+    char *mem_n_jumps = getenv("MEMORY_N_JUMPS");
+    char *n_memory = getenv("N_MEMORY");
+
+    char *io_n_dumps = getenv("IO_N_DUMPS");
+    char *n_io = getenv("N_IO");
+
+    command_cpu[5] = cpu_n_pi;
+    command_mem[5] = mem_n_jumps;
+    command_io[5] = io_n_dumps;
 
     // Fork 1 : CPU Load
     pid_t pid = fork();

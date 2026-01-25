@@ -29,7 +29,7 @@ $(BIN_DIR)/memory_load: $(SRC_DIR)/load/memory_load.c
 $(BIN_DIR)/io_load: $(SRC_DIR)/load/io_load.c
 	gcc -o $@ $(SRC_DIR)/load/io_load.c
 
-$(BIN_DIR)/cstate_monitor: main.c
-	gcc -o $@ main.c -lm
+$(BIN_DIR)/cstate_monitor: main.c src/env/env.c
+	gcc -o $@ $^ -lm
 
 all: make_dirs $(BINS)
