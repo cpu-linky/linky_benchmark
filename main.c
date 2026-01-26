@@ -30,6 +30,8 @@ int main() {
     command_mem[5] = mem_n_jumps;
     command_io[5] = io_n_dumps;
 
+    //TODO: add cpu affinity to record only the targeted cpu
+
     pid_t pid;
 
     // Fork 1 : CPU Load

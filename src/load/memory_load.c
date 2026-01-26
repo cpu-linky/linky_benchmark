@@ -65,6 +65,7 @@ int pointer_chase(int jumps) {
 }
 
 int main(int argc, char *argv[]) {
+    //TODO: add cpu affinity
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <jumps>\n", argv[0]);
         return 1;

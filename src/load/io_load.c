@@ -42,6 +42,7 @@ int dump_io(){
 }
 
 int main(int argc, char *argv[]) {
+    //TODO: add cpu affinity
     if (argc != 2) {
         fprintf(stderr, "Usage : %s <loop>\n", argv[0]);
         return 1;
