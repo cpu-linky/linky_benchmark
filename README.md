@@ -1,6 +1,6 @@
-# cstate_monitor
+# Linky Benchmark
 
-Monitor the C-States of your CPU 
+Benchmarking tool for the Linky project
 
 ## TODO
 
