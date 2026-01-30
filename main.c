@@ -26,7 +26,7 @@ int main() {
     char *io_log_path = getenv("IO_LOG_PATH");
 
     char *cpu_target_load = getenv("CPU_TARGET_LOAD");
-    char *cpu_target_turbostat = getenv("CPU_TARGET_TURBOSTAT");
+    int cpu_target_turbostat = atoi(getenv("CPU_TARGET_TURBOSTAT"));
 
     char *command_cpu[] = {
         "turbostat", "--quiet", "--interval", "1", "--cpu", cpu_target_load, 
@@ -45,6 +45,9 @@ int main() {
         "taskset", "-c", cpu_target_load, 
         "bin/io_load", io_n_dumps, NULL
     };
+
+    // set affinity for main process
+    set_affinity(cpu_target_turbostat);
 
     pid_t pid;
 
