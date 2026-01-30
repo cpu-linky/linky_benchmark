@@ -21,7 +21,8 @@ int dump_io(){
     close(fd_in);
 
     fd_out = open("dump", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    //TODO: voir o_direct et o_sync
+    //TODO: voir o_direct et o_sync 
+    //TODO: écrire avant dans un fichier 
     if(fd_out < 0){
         perror("Error opening dump");
         return -1;

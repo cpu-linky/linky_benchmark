@@ -6,3 +6,10 @@ bin/
 
 # files related to the experiment:
 data/
+
+# Python:
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
