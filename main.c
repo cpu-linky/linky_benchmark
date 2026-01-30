@@ -1,17 +1,17 @@
+#define _GNU_SOURCE
+#include <sched.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+
 #include "src/env/env.h"
+#include "src/utils/utils.h"
 
 int main() {
     // Load env and build commands
     load_env_file("config.env");
-    
-    char *command_cpu[] = {"turbostat", "--quiet", "--interval", "1", "bin/cpu_load", "10000000", NULL};
-    char *command_mem[] = {"turbostat", "--quiet", "--interval", "1", "bin/memory_load", "10000000", NULL};
-    char *command_io[] = {"turbostat", "--quiet", "--interval", "1", "bin/io_load", "300", NULL};
 
     char *cpu_n_pi = getenv("CPU_N_PI");
     int n_cpu = atoi(getenv("N_CPU"));
@@ -25,12 +25,26 @@ int main() {
     int n_io = atoi(getenv("N_IO"));
     char *io_log_path = getenv("IO_LOG_PATH");
 
+    char *cpu_target_load = getenv("CPU_TARGET_LOAD");
+    char *cpu_target_turbostat = getenv("CPU_TARGET_TURBOSTAT");
 
-    command_cpu[5] = cpu_n_pi;
-    command_mem[5] = mem_n_jumps;
-    command_io[5] = io_n_dumps;
+    char *command_cpu[] = {
+        "turbostat", "--quiet", "--interval", "1", "--cpu", cpu_target_load, 
+        "taskset", "-c", cpu_target_load, 
+        "bin/cpu_load", cpu_n_pi, NULL
+    };
 
-    //TODO: add cpu affinity to record only the targeted cpu
+    char *command_mem[] = {
+        "turbostat", "--quiet", "--interval", "1", "--cpu", cpu_target_load,
+        "taskset", "-c", cpu_target_load, 
+        "bin/memory_load", mem_n_jumps, NULL
+    };
+
+    char *command_io[] = {
+        "turbostat", "--quiet", "--interval", "1", "--cpu", cpu_target_load,
+        "taskset", "-c", cpu_target_load, 
+        "bin/io_load", io_n_dumps, NULL
+    };
 
     pid_t pid;
 
