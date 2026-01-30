@@ -56,6 +56,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("Dumped %d * 1MB of random data to dump.bin\n", loop);
+    printf("#| Dumped %d * 1MB of random data to dump.bin\n", loop);
     return 0;
 }

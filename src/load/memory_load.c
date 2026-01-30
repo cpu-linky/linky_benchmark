@@ -76,6 +76,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    printf("Completed %d pointer jumps in memory.\n", jumps);
+    printf("#| Completed %d pointer jumps in memory.\n", jumps);
     return 0;
 }
