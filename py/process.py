@@ -8,10 +8,11 @@ from env import (
 )
 
 data_line_re = r"^\d(\s).*$"
+time_line_re = r"\d*\.\d* sec"
 data_line_format = ["Core", "CPU", "Avg_MHz", "Busy%", "Bzy_MHz", 
                     "TSC_MHz", "IPC", "IRQ", "NMI", "SMI", "POLL", 
                     "C1", "C2", "C3", "POLL%", "C1%", "C2%", "C3%", 
-                    "CorWatt", "PkgWatt"]
+                    "CorWatt", "PkgWatt","Duration"]
 experiments = { "CPU" : CPU_LOG_PATH,
                 "MEMORY" : MEMORY_LOG_PATH,
                 "IO" : IO_LOG_PATH}
@@ -43,6 +44,16 @@ for experiment_type in experiment_order:
                                 data_lists[idx].append(float(value))
                             except ValueError:
                                 data_lists[idx].append(np.nan)
+                    elif re.match(time_line_re, line):
+                        has_data = True
+                        values = line.strip().split()
+                        
+                        try:
+                            time_val = float(values[0])
+                            data_lists[-1].append(time_val)
+                        except ValueError:
+                            data_lists[-1].append(np.nan)
+                        
         except FileNotFoundError:
             print(f"Warning: File not found {log_path}")
 
