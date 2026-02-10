@@ -19,5 +19,11 @@ Make sure that `turbostat` is installed and in your Path. Then, simply run :
 
 ## TODO
 
-- [ ] add cpu affinity ro run in only one core
-- [ ] format output to enable post processing
+- [x] add cpu affinity ro run in only one core
+- [x] format output to enable post processing
+
+FIO bencmark
+Désactiver des c states 
+Mesurer la fréquence périodique 
+Est ce que il baisse la fréquence puis C?
+Creuser inférence 
