@@ -3,19 +3,26 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-// dump a 1Mo buffer of random data (/dev/urandom) into a dump file
+// dump a 50Mo buffer of random data (/dev/urandom) into a dump file
 int dump_io(){
     int fd_in, fd_out;
-    char buffer[1024*1024];
+    size_t size = 1024*1024*50;
+    char *buffer = malloc(size); // Allocation sur le tas
+
+    if (buffer == NULL) {
+        perror("Error allocating memory");
+        return -1;
+    }
 
     fd_in = open("/dev/urandom", O_RDONLY);
     if(fd_in < 0){
         perror("Error opening /dev/urandom");
+        free(buffer);
         return -1;
     }
 
-    ssize_t result = read(fd_in, buffer, sizeof(buffer));
-    if (result != sizeof(buffer)) {
+    ssize_t result = read(fd_in, buffer, size);
+    if (result != size) {
         perror("Reading error");
     }
     close(fd_in);
@@ -23,14 +30,16 @@ int dump_io(){
     fd_out = open("dump", O_WRONLY | O_CREAT | O_TRUNC | O_SYNC, 0644);
     if(fd_out < 0){
         perror("Error opening dump");
+        free(buffer);
         return -1;
     }
 
-    ssize_t written = write(fd_out, buffer, sizeof(buffer));
-    if (written != sizeof(buffer)) {
+    ssize_t written = write(fd_out, buffer, size);
+    if (written != size) {
         perror("Writing error");
     }
     close(fd_out);
+    free(buffer); // Ne pas oublier de libérer la mémoire
 
     // delete file
     if(unlink("dump") < 0){
@@ -42,7 +51,6 @@ int dump_io(){
 }
 
 int main(int argc, char *argv[]) {
-    //TODO: add cpu affinity
     if (argc != 2) {
         fprintf(stderr, "Usage : %s <loop>\n", argv[0]);
         return 1;
@@ -55,6 +63,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("#| Dumped %d * 1MB of random data to dump.bin\n", loop);
+    printf("#| Dumped %d * 50MB of random data to dump.bin\n", loop);
     return 0;
 }
