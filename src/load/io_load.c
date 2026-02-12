@@ -3,10 +3,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-// dump a 50Mo buffer of random data (/dev/urandom) into a dump file
+// dump a 25Mo buffer of random data (/dev/urandom) into a dump file
 int dump_io(){
     int fd_in, fd_out;
-    size_t size = 1024*1024*50;
+    size_t size = 1024*1024*25;
     char *buffer = malloc(size); // Allocation sur le tas
 
     if (buffer == NULL) {
@@ -63,6 +63,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    printf("#| Dumped %d * 50MB of random data to dump.bin\n", loop);
+    printf("#| Dumped %d * 25MB of random data to dump.bin\n", loop);
     return 0;
 }
